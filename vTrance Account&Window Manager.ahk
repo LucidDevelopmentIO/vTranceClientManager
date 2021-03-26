@@ -295,6 +295,7 @@ IfWinActive, Dofus
 			Sleep, 50
 		}
 	}
+	
 	WinActivate, ahk_id %ActiveID%
 	MouseMove, %PosX%, %PosY%
 }
@@ -360,21 +361,12 @@ XButton2::
 Return
 
 
-RefreshList() {
-	Selected := ""
-	Loop {
-		RowNumber := LV_GetNext(RowNumber)  ; Resume the search at the row after that found by the previous iteration.
-		if not RowNumber  ; The above returned zero, so there are no more selected rows.
-			break
-		Selected := Selected "," RowNumber
-	}
+RefreshList() {	
 	oINI := oINI_Load(A_ScriptDir "\Config.ini")
 	LV_Delete()
 	For Section, Sections in oINI
 		If (Section != "Config")
 			LV_Add("", oINI[Section, "AccountName"], "******", oINI[Section, "WindowX"], oINI[Section, "WindowY"], oINI[Section, "WindowW"], oINI[Section, "WindowH"], oINI[Section, "CharacterSelected"])
-	
-	oINI["Config", "LastActive"] := Selected
 }
 
 LV_MoveRow(moveup = true) {
